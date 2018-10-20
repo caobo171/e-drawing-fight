@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/caobo171/e-drawing-fight/issues"
   },
-  "homepage": "https://github.com/caobo171/e-drawing-fight#readme"
+  "homepage": "https://github.com/caobo171/e-drawing-fight#readme",
+  "dependencies": {}
 }
