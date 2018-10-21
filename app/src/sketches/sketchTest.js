@@ -5,7 +5,7 @@ export default function sketchTest(p) {
     ai = new AI(p);
     ai.start();
     p.createCanvas(400, 600);
-    p.background("blue");
+    p.background("white");
   };
   p.draw = () => {
     p.strokeWeight(8);

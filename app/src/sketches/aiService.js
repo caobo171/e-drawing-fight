@@ -10,18 +10,20 @@ export default class AI {
   }
 
   readFile = () => {
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", this.classPath, false);
-    rawFile.onreadystatechange = function() {
-      if (rawFile.readyState === 4) {
-        if (rawFile.status === 200 || rawFile.status === 0) {
-          var allText = rawFile.responseText;
-          console.log(allText);
-          this.success(allText);
+    return new Promise((resolve, reject) => {
+      var rawFile = new XMLHttpRequest();
+      rawFile.open("GET", this.classPath, false);
+      rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4) {
+          if (rawFile.status === 200 || rawFile.status === 0) {
+            // var allText = ;
+            // alert(allText);
+            resolve(rawFile.responseText);
+          }
         }
-      }
-    };
-    rawFile.send(null);
+      };
+      rawFile.send(null);
+    });
   };
 
   success(data) {
@@ -39,7 +41,7 @@ export default class AI {
 
     //load the model
     this.model = await tf.loadModel("model2/model.json");
-    this.readFile();
+    this.readFile().then(data => this.success(data));
     //this.success(this.stringClasses);
     console.log(this.model);
 
