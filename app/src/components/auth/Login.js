@@ -14,6 +14,7 @@ class Login extends Component {
   onSubmit = e =>{
     e.preventDefault();
     this.props.logIn(this.state);
+  
   }
 
   onChange = e => this.setState({[e.target.name]: e.target.value})
@@ -23,6 +24,7 @@ class Login extends Component {
   }
 
   render() {
+    console.log(this.props.auth);
     return (
       <div>
         <form onSubmit= {this.onSubmit}>
@@ -57,6 +59,12 @@ Login.PropTypes ={
   firebase: PropTypes.object.isRequired
 }
 
+const mapStatetoProps = (state)=>{
+  return{
+    auth: state.firebase.auth,
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return{
     logIn: (creds) => {
@@ -68,4 +76,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null,mapDispatchToProps )(Login);
+export default connect(mapStatetoProps,mapDispatchToProps )(Login);

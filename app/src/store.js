@@ -5,7 +5,7 @@ import firebase from "firebase";
 import "firebase/firestore";
 import { firebaseReducer, reactReduxFirebase, getFirebase } from "react-redux-firebase";
 import {
-  reactFireStore,
+  // reactFireStore,
   firestoreReducer,
   reduxFirestore,
   getFirestore
@@ -26,13 +26,13 @@ const firebaseConfig = {
 };
 
 const rrfConfig = {
-  userProfile: "users",
+  // userProfile: "users",
   userFirestoreForProfile: true
 };
 
 firebase.initializeApp(firebaseConfig);
 
-const firestore = firebase.firestore();
+// const firestore = firebase.firestore();
 
 const createStoreWithFirebase = compose(
   reactReduxFirebase(firebase, rrfConfig),
