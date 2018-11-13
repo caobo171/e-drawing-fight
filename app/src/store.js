@@ -1,13 +1,20 @@
-import { createStore, combineReducers, compose } from "redux";
-import firebase from "firebase/app";
+import { createStore, combineReducers, compose, applyMiddleware } from "redux";
+import thunk from 'redux-thunk';
+import firebase from "firebase";
 
 import "firebase/firestore";
-import { firebaseReducer, reactReduxFirebase } from "react-redux-firebase";
+import { firebaseReducer, reactReduxFirebase, getFirebase } from "react-redux-firebase";
 import {
-  reactFireStore,
+  // reactFireStore,
   firestoreReducer,
-  reduxFirestore
+  reduxFirestore,
+  getFirestore
 } from "redux-firestore";
+
+// Reducers
+import testReducer from './reducers/testReducer';
+import authReducer from './reducers/authReducer';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDAHvEi-X3hvvYoFk40kpYvAW_P8-9aFHs",
@@ -19,13 +26,13 @@ const firebaseConfig = {
 };
 
 const rrfConfig = {
-  userProfile: "users",
+  // userProfile: "users",
   userFirestoreForProfile: true
 };
 
 firebase.initializeApp(firebaseConfig);
 
-const firestore = firebase.firestore();
+// const firestore = firebase.firestore();
 
 const createStoreWithFirebase = compose(
   reactReduxFirebase(firebase, rrfConfig),
@@ -34,7 +41,9 @@ const createStoreWithFirebase = compose(
 
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
-  firestore: firestoreReducer
+  firestore: firestoreReducer,
+  test: testReducer,
+  auth: authReducer
 });
 
 const initialState = {};
@@ -42,7 +51,11 @@ const initialState = {};
 const store = createStoreWithFirebase(
   rootReducer,
   initialState,
-  compose(reactReduxFirebase(firebase))
+  compose(
+    applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})),
+    // reactReduxFirebase(firebase, rrfConfig),
+    // reduxFirestore(firebase)
+    )
 );
 
 export default store;
