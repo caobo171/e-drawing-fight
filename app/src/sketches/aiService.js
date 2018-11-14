@@ -27,7 +27,7 @@ export default class AI {
   };
 
   success(data) {
-    console.log(data);
+    //console.log(data);
     const lst = data.split(/\n/);
     for (var i = 0; i < lst.length - 1; i++) {
       let symbol = lst[i];
