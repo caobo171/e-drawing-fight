@@ -31,14 +31,9 @@ class Test extends Component {
       else{
         this.renderWord();
         this.setState({time: 15});
-        var element1 = <P5Wrapper float="left" text={this.state.word} sketch={sketchTest} />
-        var element2 =  <P5Wrapper float="right"  sketch={sketchTest2} />
-        ReactDOM.render(element1, document.getElementById('sketch1'));
-        ReactDOM.render(element2, document.getElementById('sketch2'));
       }
     },1000);
   }
-
   componentWillUnmount(){
     clearInterval();
   }
@@ -48,7 +43,7 @@ class Test extends Component {
     <div>
       <div>word {this.state.word}</div>
       <div>{this.state.time}</div>
-      <div id="sketch1"> <P5Wrapper float="left" text={this.state.word} sketch={sketchTest} /></div>
+      <div id="sketch1"> <P5Wrapper float="left" text={this.state.word} time={this.state.time} sketch={sketchTest} /></div>
       <div id= "sketch2"> <P5Wrapper float="right"  sketch={sketchTest2} /> </div> 
     </div>
   );
