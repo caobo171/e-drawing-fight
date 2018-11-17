@@ -8,7 +8,7 @@ import AI from "../sketches/aiService";
 class Test extends Component {
   constructor(props){
     super(props); 
-    this.levelUp = this.handlerLevelUp.bind(this);//console.log(this.levelUp);
+    this.levelUp = this.handlerLevelUp.bind(this);//console.log(this.levelUp);// tức là bên đây thì time vs level up vẫn dk
     this.state = {
       word:"",
       time:15,
@@ -52,14 +52,14 @@ class Test extends Component {
   }
   componentWillUnmount(){
     clearInterval();
-  }
+  }// là sao ?? cai ham level up kia
   
   render() {
   return (
     <div>
       <div>word {this.state.word}</div>
-      <div>{this.state.time}</div>
-      <div id="sketch1"> <P5Wrapper float="left" text={this.state.word} time={this.props.time} levelUP={this.levelUp} sketch={sketchTest} /></div>
+      <div>{this.state.time}</div> 
+      <div id="sketch1"> <P5Wrapper float="left" text={this.state.word} time={this.state.time} levelUp={this.levelUp} sketch={sketchTest} /></div>
       <div id= "sketch2"> <P5Wrapper float="right"  sketch={sketchTest2} /> </div> 
     </div>
   );
