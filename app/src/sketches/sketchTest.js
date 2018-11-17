@@ -1,7 +1,9 @@
 import AI from "./aiService";
 export default function sketchTest(p) {
   var ai;
-  var word;
+  var word = "aaaaaa"; 
+  var time = 15;
+  var score = 0;
   p.setup = () => {
     ai = new AI(p);
     ai.start();
@@ -9,21 +11,34 @@ export default function sketchTest(p) {
     p.background("white");
   };
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
-    if (props.text){
+    if (props.text) {
       word = props.text;
-      console.log(word);
+      time = props.time;
     }
   };
   p.draw = () => {
     p.strokeWeight(8);
     p.stroke("white");
-    p.text("10",20,20);//hien thi diem so
+    p.text(score, 15, 15);//hien thi diem so thu 
     p.stroke(0);
     if (p.mouseIsPressed) {
       p.line(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
+      word = "line";
+      window.word = word;
+      let prediction = ai.predict().names[0];
+      prediction = prediction.replace(/\s/g,'');///bỏ khoảng trắng regular expression
+      console.log(prediction);
+      if (word == prediction) {
+        console.log("correct"); 
+        score++;
+        setTimeout(()=>{
+          p.background("white")
+          //p.draw();
+        },1000);
+      }
     }
-  };
-  p.mousePressed = () => {
-    console.log(ai.predict());
+    if(time==0){
+      p.background("white");
+    };
   };
 }
