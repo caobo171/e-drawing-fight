@@ -16,4 +16,6 @@ server.listen(port, () => {
 })
 
 io.on('connection', (socket) => {
+    console.log("co nguoi ket noi"+socket.id);
+    socket.join("test-room");   //chua co chuc nang tao room nen cho dai vo room nay
 })
