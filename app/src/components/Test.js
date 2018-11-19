@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import P5Wrapper from "react-p5-wrapper";
 import sketchTest from "../sketches/sketchTest";
 import sketchTest2 from "../sketches/sketchTest2";
@@ -7,11 +6,24 @@ import AI from "../sketches/aiService";
 
 class Test extends Component {
   constructor(props){
-    super(props);
+    super(props); 
+    this.levelUp = this.handlerLevelUp.bind(this);
     this.state = {
       word:"",
       time:15,
+      level:1,
     };
+  }
+
+  handlerLevelUp = () => {
+    if(this.state.level == 5){
+      console.log("End game!");
+      this.setState({level : 1});
+    } else{
+      this.setState({level : this.state.level +1});
+      this.renderWord();
+      this.setState({time: 15});console.log(this.state.level);
+    }
   }
 
   renderWord(){
@@ -27,10 +39,8 @@ class Test extends Component {
     this.renderWord();
     setInterval(()=>{  // dem thoi gian de doi chu moi voi ca xoa canvas
       if(this.state.time>0){
-        this.setState({time: this.state.time - 1});}
-      else{
-        this.renderWord();
-        this.setState({time: 15});
+        this.setState({time: this.state.time - 1});} 
+      else{ this.handlerLevelUp();
       }
     },1000);
   }
@@ -42,8 +52,8 @@ class Test extends Component {
   return (
     <div>
       <div>word {this.state.word}</div>
-      <div>{this.state.time}</div>
-      <div id="sketch1"> <P5Wrapper float="left" text={this.state.word} time={this.state.time} sketch={sketchTest} /></div>
+      <div>{this.state.time}</div> 
+      <div id="sketch1"> <P5Wrapper float="left" text={this.state.word} time={this.state.time} levelUp={this.levelUp} sketch={sketchTest} /></div>
       <div id= "sketch2"> <P5Wrapper float="right"  sketch={sketchTest2} /> </div> 
     </div>
   );
