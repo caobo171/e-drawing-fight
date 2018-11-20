@@ -17,6 +17,7 @@ export default function sketchTest(p) {
       console.log(socket.id);
   });
   };
+
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
     if(props.text){
       word = props.text;
@@ -25,6 +26,7 @@ export default function sketchTest(p) {
 
       if(p.mouseIsPressed){
         word = "rain";
+
         let prediction = ai.predict().names[0];
         prediction = prediction.replace(/\s/g,'');///bỏ khoảng trắng regular expression
         console.log(prediction);
@@ -32,8 +34,10 @@ export default function sketchTest(p) {
           console.log("correct"); 
           score++;
           setTimeout(()=>{
+
             p.background("white");
             levelUp();
+
           },1000);
         }
       }
@@ -46,9 +50,11 @@ export default function sketchTest(p) {
     p.stroke(0);
     if (p.mouseIsPressed) {
       p.line(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
+
       if(socket != null){
         socket.emit("client-send-drawing",p.mouseX,p.mouseY);
       }
+
     }
     if(time===0){
       p.background("white");

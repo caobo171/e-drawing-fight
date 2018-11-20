@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+// <<<<<<< long04
+// =======
+// import io from "socket.io-client";
+// >>>>>>> master
 import P5Wrapper from "react-p5-wrapper";
 import sketchTest from "../sketches/sketchTest";
 import sketchTest2 from "../sketches/sketchTest2";
@@ -7,11 +11,14 @@ import AI from "../sketches/aiService";
 class Test extends Component {
   constructor(props){
     super(props); 
+
     this.levelUp = this.handlerLevelUp.bind(this);
+
     this.state = {
       word:"",
       time:15,
       level:1,
+
     };
   }
 
@@ -24,6 +31,7 @@ class Test extends Component {
       this.renderWord();
       this.setState({time: 15});console.log(this.state.level);
     }
+
   }
 
   renderWord(){
@@ -36,17 +44,20 @@ class Test extends Component {
   }
   
   componentDidMount (){
+    this.initSocket();
     this.renderWord();
     setInterval(()=>{  // dem thoi gian de doi chu moi voi ca xoa canvas
       if(this.state.time>0){
         this.setState({time: this.state.time - 1});} 
+
       else{ this.handlerLevelUp();
+
       }
     },1000);
   }
   componentWillUnmount(){
     clearInterval();
-  }
+  }// là sao ?? cai ham level up kia
   
   render() {
   return (
