@@ -1,25 +1,32 @@
 import AI from "./aiService";
+import io from "socket.io-client";
 export default function sketchTest(p) {
   var ai;
   var word = "aaaaaa"; 
   var time = 15;
   var score = 0;
+  var socket = null;
+
   p.setup = () => {
     ai = new AI(p);
     ai.start();
     p.createCanvas(400, 600);
     p.background("white");
+    socket = io("http://localhost:5000");
+    socket.on("connect",()=>{
+      console.log(socket.id);
+  });
   };
-  p.myCustomRedrawAccordingToNewPropsHandler = function (props) {//qua cái props handler này thì time vs levelUp thành undefined chỉ có text là ok
+
+  p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
     if(props.text){
       word = props.text;
       time = props.time;
-      let levelUp = props.levelUp; console.log(props.levelUp);//cái hàm này có ý nghĩa gì nó truyền props từ tét vào
-      //p5 wrapper có mỗi doc về hàm này thôi, cho ae xem cái docs
+      let levelUp = props.levelUp;
 
       if(p.mouseIsPressed){
-        //word = "rain";
-        window.word = word;
+        word = "rain";
+
         let prediction = ai.predict().names[0];
         prediction = prediction.replace(/\s/g,'');///bỏ khoảng trắng regular expression
         console.log(prediction);
@@ -27,8 +34,10 @@ export default function sketchTest(p) {
           console.log("correct"); 
           score++;
           setTimeout(()=>{
-            p.background("white")
-            //p.draw();
+
+            p.background("white");
+            levelUp();
+
           },1000);
         }
       }
@@ -41,6 +50,11 @@ export default function sketchTest(p) {
     p.stroke(0);
     if (p.mouseIsPressed) {
       p.line(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
+
+      if(socket != null){
+        socket.emit("client-send-drawing",p.mouseX,p.mouseY);
+      }
+
     }
     if(time===0){
       p.background("white");
