@@ -10,7 +10,7 @@ socket.on('user-exist',()=>{
     console.log('check USER EXIST')
 })
 
-const testReducer = (state = initState, action) => {
+const userReducer = (state = initState, action) => {
     switch(action.type){
         case 'LOGIN_USER_SUCCESS':
            let object={socket,...action.data};
@@ -27,4 +27,4 @@ const testReducer = (state = initState, action) => {
     }
 }
 
-export default testReducer;
+export default userReducer;
