@@ -56,3 +56,13 @@ export const logOut = () => {
       });
   };
 };
+
+
+export const getCurrentUser= (firestore,dataUser,dispatch)=>{
+    console.log('cao',dataUser)
+    firestore.collection('users').doc(dataUser.uid).get()
+    .then(result =>{
+        console.log('check',result.data())
+        dispatch({type:'GET_CURRENT_USER_SUCCESS',data:{...result.data(),id:dataUser.uid}})
+    })
+}

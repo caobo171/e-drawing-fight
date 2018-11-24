@@ -6,6 +6,7 @@ import Login from "./components/auth/Login";
 import Arena from './components/Arena';
 import Global from './components/socket/Global';
 import Dashboard from './components/Dashboard';
+import Profile from './components/Profiles';
 import test from "./components/auth/test";
 
 import { Provider } from "react-redux";
@@ -20,12 +21,13 @@ class App extends Component {
         <Router>
        
             <div className="App">
-              <Global/>
-              <Route path="/" component={Dashboard} />
-              <Route path="/login" component={Login} />
-              <Route path="/test" component={test} />
-              <Route path="/testplay" component={Test}/>
-              <Route path = "/arena" component = {Arena}/>
+              <Route path="/" component ={Global}/>
+              <Route path="/" exact component={Dashboard} />
+              <Route path="/login" exact component={Login} />
+              <Route path="/test" exact component={test} />
+              <Route path="/testplay" exact component={Test}/>
+              <Route path = "/arena" exact component = {Arena}/>
+              <Route path = "/profile/:id" exact component = {Profile}/>
             </div>
             
       

@@ -29,8 +29,9 @@ const userReducer = (state = initState, action) => {
 
     case "GET_CURRENT_USER_SUCCESS":
       let object1 = { socket, ...action.data };
-      console.log("check getcurrent success", object1);
+      console.log("check getcurrent success",action.data);
       if(action.data){
+        console.log('cao get current user')
         object1.socket.emit("login-user", {
           socketid: object1.socket.id,
           id: action.data.id
@@ -39,7 +40,8 @@ const userReducer = (state = initState, action) => {
       }else{
         return {...state,currentUser:{}}
       }
-     
+    case "GET_USER":
+       return {...state,user:action.data}
      
     default:
       return state;

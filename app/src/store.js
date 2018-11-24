@@ -11,6 +11,8 @@ import {
   getFirestore
 } from "redux-firestore";
 
+import {getCurrentUser} from './actions/authActions';
+
 // Reducers
 import testReducer from './reducers/testReducer';
 import userReducer from './reducers/userReducer';
@@ -36,7 +38,9 @@ firebase.firestore().settings({
 
 firebase.auth().onAuthStateChanged((user) =>{
   if(user){
-      store.dispatch({type:'GET_CURRENT_USER_SUCCESS', data:user});
+      //console.log('cao ',user);
+      //store.dispatch({type:'GET_CURRENT_USER_SUCCESS', data:user});
+      getCurrentUser(firebase.firestore(),user,store.dispatch);
   }else{
       store.dispatch({type:'GET_CURRENT_USER_SUCCESS',data:null});
   }
