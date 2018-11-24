@@ -1,12 +1,18 @@
 export const logIn = (credentials) => {
-    return (dispatch, getState, {getFirebase}) =>{
+    return (dispatch, getState, {getFirebase,getFirestore}) =>{
         const firebase = getFirebase();
+        const firestore = getFirestore();
 
         firebase.auth().signInWithEmailAndPassword(
             credentials.email,
             credentials.password
-        ).then(() => {
-            dispatch({type: 'LOGIN_SUCCESS'});
+        ).then((res) => {
+            firestore.collection('/users').doc(res.user.uid).get().then(response=>{
+                console.log('check ',response.data());
+                console.log('check user id',res.user);
+                dispatch({type: 'LOGIN_USER_SUCCESS',data:{...response.data(), id:res.user.uid}});
+            })
+            
         }).catch((err)=>{
             dispatch({type: 'LOGIN_ERROR', err});
         })
@@ -19,7 +25,7 @@ export const logOut= () => {
         const firebase = getFirebase();
 
         firebase.auth().signOut().then(()=>{
-            dispatch({type: 'LOGOUT_SUCCESS'})
+            dispatch({type: 'LOGOUT_USER_SUCCESS'})
         })
     }
 }

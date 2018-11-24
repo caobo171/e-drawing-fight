@@ -16,8 +16,6 @@ export default class AI {
       rawFile.onreadystatechange = function() {
         if (rawFile.readyState === 4) {
           if (rawFile.status === 200 || rawFile.status === 0) {
-            // var allText = ;
-            // alert(allText);
             resolve(rawFile.responseText);
           }
         }

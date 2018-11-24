@@ -14,7 +14,7 @@ import {
 // Reducers
 import testReducer from './reducers/testReducer';
 import authReducer from './reducers/authReducer';
-
+import userReducer from './reducers/userReducer';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDAHvEi-X3hvvYoFk40kpYvAW_P8-9aFHs",
@@ -31,7 +31,9 @@ const rrfConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
+firebase.firestore().settings({
+  timestampsInSnapshots: true
+})
 // const firestore = firebase.firestore();
 
 const createStoreWithFirebase = compose(
@@ -43,7 +45,8 @@ const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
   test: testReducer,
-  auth: authReducer
+  auth: authReducer,
+  user: userReducer
 });
 
 const initialState = {};
