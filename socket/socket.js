@@ -26,7 +26,7 @@ module.exports = function (io){
             console.log(data);
             console.log('--------------')
             console.log(userOnline);
-            if(!userOnline.find(e=> {return e.socketid===data.socketid||e.id===data.id})){
+            if(!userOnline.find(e=> {return e.socketid===data.socketid||e.uid===data.uid})){
                 userOnline.push(data);
                 console.log(userOnline.length);
                 

@@ -7,6 +7,7 @@ import Arena from './components/Arena';
 import Global from './components/socket/Global';
 import Dashboard from './components/Dashboard';
 import Profile from './components/Profiles';
+import Practice from './components/Practice';
 import test from "./components/auth/test";
 
 import { Provider } from "react-redux";

@@ -7,6 +7,9 @@ class Profile extends Component {
     this.props.getUserByID(this.props.match.params.id);
   }
   render() {
+    if(!this.props.auth){
+      this.props.history.push('/');
+    }
     const { user } = this.props;
     return (
       <React.Fragment>
@@ -133,14 +136,15 @@ class Profile extends Component {
 }
 const mapStatetoProps = state => {
   return {
-    user: state.user.user
+    user: state.user.user,
+    auth : state.user.auth
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getUserByID: id => {
-      dispatch(getUserByID(id));
+    getUserByID: uid => {
+      dispatch(getUserByID(uid));
     }
   };
 };

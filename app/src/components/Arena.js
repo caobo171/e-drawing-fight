@@ -7,10 +7,13 @@ class Arena extends React.Component {
   handleClick = (user)=>{
     console.log('long ấy user',user);
     if(this.props.socket){
-      this.props.socket.emit("challenge",user.id,user.socketid)
+      this.props.socket.emit("challenge",user.uid,user.socketid)
     }
   }
   render() {
+    if(!this.props.auth){
+      this.props.history.push('/');
+    }
     console.log('long check usersssss', this.props.usersOnline);
     return (
       <section class="arena">
@@ -57,7 +60,8 @@ class Arena extends React.Component {
 const mapStatetoProps = state => {
   return {
     usersOnline: state.user.usersOnline,
-    socket : state.user.currentUser.socket
+    socket : state.user.currentUser.socket,
+    auth : state.user.auth
   };
 };
 

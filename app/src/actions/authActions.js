@@ -1,4 +1,4 @@
-export const logIn = credentials => {
+export const logIn = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
@@ -7,11 +7,11 @@ export const logIn = credentials => {
       .auth()
       .signInWithPopup(provider)
       .then(function(result) {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        console.log("check", result.user);
-        firestore.collection("users").doc(result.user.uid).get()
+        firestore
+          .collection("users")
+          .doc(result.user.uid)
+          .get()
           .then(res => {
-             console.log('long',result.user.uid);
             if (!res.data()) {
               const userData = {
                 name: result.user.displayName,
@@ -19,27 +19,32 @@ export const logIn = credentials => {
                 exp: 0,
                 level: 0,
                 certification: []
-              }
-              firestore.collection("users").doc(result.user.uid).set(userData)
+              };
+              firestore
+                .collection("users")
+                .doc(result.user.uid)
+                .set(userData)
                 .then(response => {
-                   console.log('long create user');
-
                   dispatch({
                     type: "GET_CURRENT_USER_SUCCESS",
-                    data: { ...userData, id: result.user.uid }
+                    data: { ...userData, uid: result.user.uid }
                   });
-                });
-            }else{
-                console.log("long login current user",res.data());
-                dispatch({
+                }).catch(err=>{
+                  dispatch({
                     type: "GET_CURRENT_USER_SUCCESS",
-                    data: { ...res.data(), id: result.user.uid }
+                    data: null
                   });
+                })
+            } else {
+              dispatch({
+                type: "GET_CURRENT_USER_SUCCESS",
+                data: { ...res.data(), uid: result.user.uid }
+              });
             }
           });
       })
-      .catch((error)=> {
-        console.log("long", error);
+      .catch(error => {
+        dispatch({ type: "GET_CURRENT_USER_SUCCESS", data: null });
       });
   };
 };
@@ -57,12 +62,18 @@ export const logOut = () => {
   };
 };
 
-
-export const getCurrentUser= (firestore,dataUser,dispatch)=>{
-    console.log('cao',dataUser)
-    firestore.collection('users').doc(dataUser.uid).get()
-    .then(result =>{
-        console.log('check',result.data())
-        dispatch({type:'GET_CURRENT_USER_SUCCESS',data:{...result.data(), uid:dataUser.uid}})
+export const getCurrentUser = (firestore, dataUser, dispatch) => {
+  firestore
+    .collection("users")
+    .doc(dataUser.uid)
+    .get()
+    .then(result => {
+      dispatch({
+        type: "GET_CURRENT_USER_SUCCESS",
+        data: { ...result.data(), uid: dataUser.uid }
+      });
     })
-}
+    .catch(err => {
+      dispatch({ type: "GET_CURRENT_USER_SUCCESS", data: null });
+    });
+};

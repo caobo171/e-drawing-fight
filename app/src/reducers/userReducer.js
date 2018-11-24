@@ -4,7 +4,8 @@ const initState = {
   socket: {},
   users: [],
   currentUser: {},
-  usersOnline:[]
+  usersOnline:[],
+  auth:true
 };
 const socket = io("http://localhost:5000");
 socket.on("user-exist", () => {
@@ -22,14 +23,14 @@ const userReducer = (state = initState, action) => {
       console.log('long login user success',action.data);
       object.socket.emit("login-user", {
         socketid: object.socket.id,
-        id: action.data.uid 
+        uid: action.data.uid 
       });
       console.log("check success", object);
-      return { ...state, currentUser: object };
+      return { ...state, currentUser: object ,auth:true };
 
     case "LOGOUT_USER_SUCCESS":
       socket.emit("logout-user", { socketid: socket.id });
-      return {...state,currentUser:{}};
+      return {...state,currentUser:{},auth:false};
 
     case "GET_CURRENT_USER_SUCCESS":
       let object1 = { socket, ...action.data };
@@ -38,11 +39,11 @@ const userReducer = (state = initState, action) => {
         console.log('cao get current user',action.data)
         object1.socket.emit("login-user", {
           socketid: object1.socket.id,
-          id: action.data.uid
+          uid: action.data.uid
         });
-        return {...state,currentUser:object1}
+        return {...state,currentUser:object1,auth:true}
       }else{
-        return {...state,currentUser:{}}
+        return {...state,currentUser:{},auth:false}
       }
     case "GET_USER":
        return {...state,user:action.data}

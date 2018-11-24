@@ -6,7 +6,7 @@ import sketchTest2 from "../sketches/sketchTest2";
 import AI from "../sketches/aiService";
 
 
-class Test extends Component {
+class Practice extends Component {
   constructor(props){
     super(props); 
     this.div1 = React.createRef();
@@ -57,10 +57,10 @@ class Test extends Component {
   }// là sao ?? cai ham level up kia
   
   render() {
-    // if(!this.props.auth){
-    //   this.props.history.push('/');
-    // }
-    //console.log("long",this.props.user, "  ", this.props.match.params.id)
+    if(!this.props.auth){
+      this.props.history.push('/');
+    }
+    console.log("long",this.props.user, "  ", this.props.match.params.id)
     if(this.props.user.uid===this.props.match.params.id){
       this.renderWord();
     }
@@ -126,4 +126,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStatetoProps, mapDispatchToProps)(Test);
+export default connect(mapStatetoProps, mapDispatchToProps)(Practice);

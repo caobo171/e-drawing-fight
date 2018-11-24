@@ -4,14 +4,11 @@ import { connect } from "react-redux";
 import { logIn, logOut } from "../../actions/authActions";
 
 class Login extends Component {
-  state = {
-    email: "",
-    password: ""
-  };
+
 
   onSubmit = e => {
     e.preventDefault();
-    this.props.logIn(this.state);
+    this.props.logIn();
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -25,7 +22,9 @@ class Login extends Component {
   } 
 
   render() {
-    console.log(this.props.auth);
+    if(this.props.auth){
+      this.props.history.push('/')
+    }
     return (
       <React.Fragment>
         <section className="login" id="login">
@@ -50,17 +49,14 @@ Login.propTypes = {
 
 const mapStatetoProps = state => {
   return {
-    auth: state.firebase.auth
+    auth:state.user.auth
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    logIn: creds => {
-      dispatch(logIn(creds));
-    },
-    logOut: () => {
-      dispatch(logOut());
+    logIn: () => {
+      dispatch(logIn());
     }
   };
 };

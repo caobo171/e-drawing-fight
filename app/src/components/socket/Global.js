@@ -5,13 +5,14 @@ import { setUsersOnline } from '../../actions/userActions';
 class Global extends React.Component {
   state = {
     ischallenged: false,
-    id:null,
+    uid:null,
   };
   componentDidMount() {
     if (window.socket) {
       console.log("long socket ok ok");
-      window.socket.on("challenge", (id) => {
-        this.setState({ ischallenged: true,id:id});
+      window.socket.on("challenge", (uid) => {
+        console.log('cao da nhan duoc challeng')
+        this.setState({ ischallenged: true,uid:uid});
       });
 
       window.socket.on("get-users",(data)=>{
@@ -19,14 +20,14 @@ class Global extends React.Component {
         this.props.setUsersOnline(data);
       })
 
-      window.socket.on("server-change-route",(id)=>{this.props.history.push('/testplay/'+id);})
+      window.socket.on("server-change-route",(uid)=>{this.props.history.push('/testplay/'+uid);})
     }
   }
 
   handleAccept = () => {
     this.setState({ ischallenged: false });
-    this.props.socket.emit("client-accept",this.state.id);
-    this.props.history.push('/testplay/'+this.state.id);
+    this.props.socket.emit("client-accept",this.state.uid);
+    this.props.history.push('/testplay/'+this.state.uid);
   }
 
   handlerDecline = () =>{

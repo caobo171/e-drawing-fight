@@ -3,13 +3,19 @@ import { connect } from "react-redux";
 import { logOut } from "../actions/authActions";
 import { Link } from 'react-router-dom';
 
+
 class Dashboard extends React.Component {
+     
+   
   render() {
-    const { currentUser } = this.props;
+    if(!this.props.auth){
+        this.props.history.push('/login');
+    }
+    const { currentUser ,auth} = this.props;
     console.log('check',currentUser);
     return (
       <React.Fragment>
-        {currentUser.name && (
+        {(currentUser.name && auth) && (
           <section className="dashboard" id="dashboard">
             <a href="#popup-sidebar-user" className="list--btn">
               <i className="fas fa-bars list--btn--icon" />
@@ -60,7 +66,7 @@ class Dashboard extends React.Component {
                     </a>
                   </div>
                   <div className="dashboard__list--icon">
-                    <Link to={`/profile/${currentUser.id}`}className="dashboard__list--icon--a">
+                    <Link to={`/profile/${currentUser.uid}`}className="dashboard__list--icon--a">
                       <i className="fas fa-address-book" />
                       <div className="dashboard__list--caption">profile</div>
                     </Link>
@@ -77,14 +83,14 @@ class Dashboard extends React.Component {
                       <h3 className="heading-tertiary">The Rankings</h3>
                     </div>
                   </a>
-                  <a className="dashboard__card">
+                  <Link to="/arena" className="dashboard__card">
                     <div className="dashboard__card--icon">
                       <i className="dashboard__card--icon--i fas fa-chess-rook" />
                     </div>
                     <div className="dashboard__card--title">
                       <h3 className="heading-tertiary">The Fighting Arena</h3>
                     </div>
-                  </a>
+                  </Link>
                   <a className="dashboard__card">
                     <div className="dashboard__card--icon">
                       <i className="dashboard__card--icon--i fas fa-book" />
@@ -105,7 +111,8 @@ class Dashboard extends React.Component {
 
 const mapStatetoProps = state => {
   return {
-    currentUser: state.user.currentUser
+    currentUser: state.user.currentUser,
+    auth : state.user.auth
   };
 };
 
