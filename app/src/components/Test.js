@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import {connect} from 'react-redux';
-// <<<<<<< long04
-// =======
-// import io from "socket.io-client";
-// >>>>>>> master
 import P5Wrapper from "react-p5-wrapper";
 import sketchTest from "../sketches/sketchTest";
 import sketchTest2 from "../sketches/sketchTest2";
 import AI from "../sketches/aiService";
-import { getCurrentUser} from '../actions/authActions';
+
 
 class Test extends Component {
   constructor(props){
@@ -45,8 +41,7 @@ class Test extends Component {
   }
   
   componentDidMount (){
-    //this.props.logIn({"aaa","aaaa"});
-    this.props.getCurrentUser();
+
     this.renderWord();
     setInterval(()=>{  // dem thoi gian de doi chu moi voi ca xoa canvas
       if(this.state.time>0){
@@ -81,9 +76,7 @@ const mapStatetoProps = (state)=>{
 
 const mapDispatchToProps = (dispatch) => {
   return{
-    getCurrentUser: (creds) => {
-      dispatch(getCurrentUser(creds));
-    }
+ 
   }
 }
 

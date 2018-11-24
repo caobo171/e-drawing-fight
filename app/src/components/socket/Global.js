@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getCurrentUser } from "../../actions/authActions";
 import { firebaseReducer, reactReduxFirebase, getFirebase } from "react-redux-firebase";
 
 class Global extends React.Component {
@@ -37,16 +36,14 @@ class Global extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getCurrentUser: history => {
-      dispatch(getCurrentUser(history));
+   
     }
-  };
 };
 
 const mapStatetoProps = state => {
   return {
-    firebase: state.firebase
-  };
+
+  }
 };
 
 export default connect(
