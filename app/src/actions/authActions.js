@@ -1,8 +1,8 @@
 export const logIn = (credentials) => {
-    return (dispatch, getState, {getFirebase,getFirestore}) =>{
+    return  (dispatch, getState, {getFirebase,getFirestore}) =>{
         const firebase = getFirebase();
         const firestore = getFirestore();
-
+        
         firebase.auth().signInWithEmailAndPassword(
             credentials.email,
             credentials.password
@@ -10,6 +10,8 @@ export const logIn = (credentials) => {
             firestore.collection('/users').doc(res.user.uid).get().then(response=>{
                 console.log('check ',response.data());
                 console.log('check user id',res.user);
+                localStorage.setItem('creds',JSON.stringify(credentials))
+
                 dispatch({type: 'LOGIN_USER_SUCCESS',data:{...response.data(), id:res.user.uid}});
             })
             
@@ -32,6 +34,7 @@ export const logOut= () => {
 
 export const register = (newUser) => {
     return(dispatch, getState, {getFirebase, getFirestore})=> {
+        
         const firebase = getFirebase();
         const firestore = getFirestore();
 
@@ -51,5 +54,33 @@ export const register = (newUser) => {
         }).catch((err)=> {
             dispatch({type: 'REGISTER_ERROR', err})
         })
+    }
+}
+
+export const getCurrentUser = ()=>{
+    return (dispatch,getState,{getFirebase,getFirestore})=>{
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+
+        let creds = JSON.parse(localStorage.getItem('creds'))
+        if(creds){
+        firebase.auth().signInWithEmailAndPassword(
+            creds.email,
+            creds.password
+        ).then((res) => {
+            firestore.collection('/users').doc(res.user.uid).get().then(response=>{
+                console.log('check ',response.data());
+                console.log('check user id',res.user);
+                console.log("long check current user")
+
+                dispatch({type: 'LOGIN_USER_SUCCESS',data:{...response.data(), id:res.user.uid}});
+            })
+            
+        }).catch((err)=>{
+            dispatch({type: 'LOGIN_ERROR', err});
+        })
+    }
+
+
     }
 }

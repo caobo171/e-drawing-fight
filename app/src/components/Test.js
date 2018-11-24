@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {connect} from 'react-redux';
 // <<<<<<< long04
 // =======
 // import io from "socket.io-client";
@@ -7,6 +8,7 @@ import P5Wrapper from "react-p5-wrapper";
 import sketchTest from "../sketches/sketchTest";
 import sketchTest2 from "../sketches/sketchTest2";
 import AI from "../sketches/aiService";
+import { getCurrentUser} from '../actions/authActions';
 
 class Test extends Component {
   constructor(props){
@@ -18,7 +20,6 @@ class Test extends Component {
       word:"",
       time:15,
       level:1,
-
     };
   }
 
@@ -44,7 +45,8 @@ class Test extends Component {
   }
   
   componentDidMount (){
-    this.initSocket();
+    //this.props.logIn({"aaa","aaaa"});
+    this.props.getCurrentUser();
     this.renderWord();
     setInterval(()=>{  // dem thoi gian de doi chu moi voi ca xoa canvas
       if(this.state.time>0){
@@ -64,11 +66,25 @@ class Test extends Component {
     <div>
       <div>word {this.state.word}</div>
       <div>{this.state.time}</div> 
-      <div id="sketch1"> <P5Wrapper float="left" text={this.state.word} time={this.state.time} levelUp={this.levelUp} sketch={sketchTest} /></div>
-      <div id= "sketch2"> <P5Wrapper float="right"  sketch={sketchTest2} /> </div> 
+      <div id="sketch1"> <P5Wrapper float="left" socket={this.props.socket} text={this.state.word} time={this.state.time} levelUp={this.levelUp} sketch={sketchTest} /></div>
+      <div id= "sketch2"> <P5Wrapper float="right" socket={this.props.socket}  sketch={sketchTest2} /> </div> 
     </div>
   );
   }
 }
 
-export default Test;
+const mapStatetoProps = (state)=>{
+  return{
+    socket: state.user.currentUser.socket
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    getCurrentUser: (creds) => {
+      dispatch(getCurrentUser(creds));
+    }
+  }
+}
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Test);
