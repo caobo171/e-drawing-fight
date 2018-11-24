@@ -1,25 +1,55 @@
-import React from 'react';
+import React from "react";
+import { connect } from "react-redux";
+import { getCurrentUser } from "../../actions/authActions";
+import { firebaseReducer, reactReduxFirebase, getFirebase } from "react-redux-firebase";
 
-class Global extends React.Component{
-    render(){
-        return (<div className="popup-simple notification-challenge">
-                <div className="notification-challenge__avatar">
-                    <div className="notification-challenge__avatar--group">
-                        <img src="https://cdn0.iconfinder.com/data/icons/superuser-web-kit/512/686909-user_people_man_human_head_person-512.png" alt="avatar" className="notification-challenge__avatar--group--img"/>
-                        <p className="notification-challenge__avatar--group--name">Vipmath171</p>
-                    </div>
-                <p className="notification-challenge__avatar--content">is challenging you</p>
+class Global extends React.Component {
+   constructor (props){
+       super(props);
+       
+   }
+  render() {
+    //console.log('long auth',this.props.auth);
+    return (
+      <div className="popup-simple notification-challenge">
+        <div className="notification-challenge__avatar">
+          <div className="notification-challenge__avatar--group">
+            <img
+              src="https://cdn0.iconfinder.com/data/icons/superuser-web-kit/512/686909-user_people_man_human_head_person-512.png"
+              alt="avatar"
+              className="notification-challenge__avatar--group--img"
+            />
+            <p className="notification-challenge__avatar--group--name">
+              Vipmath171
+            </p>
+          </div>
+          <p className="notification-challenge__avatar--content">
+            is challenging you
+          </p>
 
-                <button className="btn-teal">
-                    accept
-                </button>
-                <button  className="btn-blue">
-                    decline
-                </button>
-
-            </div>
-        </div>);
-    }
+          <button className="btn-teal">accept</button>
+          <button className="btn-blue">decline</button>
+        </div>
+      </div>
+    );
+  }
 }
 
-export default Global;
+const mapDispatchToProps = dispatch => {
+  return {
+    getCurrentUser: history => {
+      dispatch(getCurrentUser(history));
+    }
+  };
+};
+
+const mapStatetoProps = state => {
+  return {
+    firebase: state.firebase
+  };
+};
+
+export default connect(
+  mapStatetoProps,
+  mapDispatchToProps
+)(Global);

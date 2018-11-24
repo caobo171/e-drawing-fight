@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Test from "./components/Test";
 import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
 
 import Global from './components/socket/Global';
 
@@ -23,7 +22,6 @@ class App extends Component {
             <div className="App">
               <Global/>
               <Route path="/login" component={Login} />
-              <Route path="/register" component={Register} />
               <Route path="/test" component={test} />
               <Route path="/testplay" component={Test}/>
             </div>

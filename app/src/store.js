@@ -13,7 +13,6 @@ import {
 
 // Reducers
 import testReducer from './reducers/testReducer';
-import authReducer from './reducers/authReducer';
 import userReducer from './reducers/userReducer';
 
 const firebaseConfig = {
@@ -34,7 +33,14 @@ firebase.initializeApp(firebaseConfig);
 firebase.firestore().settings({
   timestampsInSnapshots: true
 })
-// const firestore = firebase.firestore();
+
+firebase.auth().onAuthStateChanged((user) =>{
+  if(user){
+      store.dispatch({type:'GET_CURRENT_USER_SUCCESS', data:user});
+  }else{
+      store.dispatch({type:'GET_CURRENT_USER_SUCCESS',data:null});
+  }
+});
 
 const createStoreWithFirebase = compose(
   reactReduxFirebase(firebase, rrfConfig),
@@ -45,7 +51,6 @@ const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
   test: testReducer,
-  auth: authReducer,
   user: userReducer
 });
 
@@ -56,8 +61,6 @@ const store = createStoreWithFirebase(
   initialState,
   compose(
     applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})),
-    // reactReduxFirebase(firebase, rrfConfig),
-    // reduxFirestore(firebase)
     )
 );
 

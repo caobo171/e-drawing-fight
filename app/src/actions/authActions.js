@@ -1,86 +1,58 @@
-export const logIn = (credentials) => {
-    return  (dispatch, getState, {getFirebase,getFirestore}) =>{
-        const firebase = getFirebase();
-        const firestore = getFirestore();
-        
-        firebase.auth().signInWithEmailAndPassword(
-            credentials.email,
-            credentials.password
-        ).then((res) => {
-            firestore.collection('/users').doc(res.user.uid).get().then(response=>{
-                console.log('check ',response.data());
-                console.log('check user id',res.user);
-                localStorage.setItem('creds',JSON.stringify(credentials))
-
-                dispatch({type: 'LOGIN_USER_SUCCESS',data:{...response.data(), id:res.user.uid}});
-            })
-            
-        }).catch((err)=>{
-            dispatch({type: 'LOGIN_ERROR', err});
-        })
-    }
-}
-
-
-export const logOut= () => {
-    return (dispatch, getState, {getFirebase})=> {
-        const firebase = getFirebase();
-
-        firebase.auth().signOut().then(()=>{
-            dispatch({type: 'LOGOUT_USER_SUCCESS'})
-        })
-    }
-}
-
-export const register = (newUser) => {
-    return(dispatch, getState, {getFirebase, getFirestore})=> {
-        
-        const firebase = getFirebase();
-        const firestore = getFirestore();
-
-        firebase.auth().createUserWithEmailAndPassword(
-            newUser.email,
-            newUser.password
-        ).then((res) => {
-            return firestore.collection('users').doc(res.user.uid).set({
-                name: newUser.name,
-                avatar: newUser.avatar,
+export const logIn = credentials => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(function(result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        console.log("check", result.user);
+        firestore.collection("users").doc(result.user.uid).get()
+          .then(res => {
+             console.log('long',result.user.uid);
+            if (!res.data()) {
+              const userData = {
+                name: result.user.displayName,
+                avatar: result.user.photoURL,
                 exp: 0,
                 level: 0,
                 certification: []
-            })
-        }).then(()=> {
-            dispatch({type: 'REGISTER_SUCCESS'})
-        }).catch((err)=> {
-            dispatch({type: 'REGISTER_ERROR', err})
-        })
-    }
-}
+              }
+              firestore.collection("users").doc(result.user.uid).set(userData)
+                .then(response => {
+                   console.log('long create user');
 
-export const getCurrentUser = ()=>{
-    return (dispatch,getState,{getFirebase,getFirestore})=>{
-        const firebase = getFirebase();
-        const firestore = getFirestore();
+                  dispatch({
+                    type: "GET_CURRENT_USER_SUCCESS",
+                    data: { ...userData, id: result.user.uid }
+                  });
+                });
+            }else{
+                console.log("long login current user",res.data());
+                dispatch({
+                    type: "GET_CURRENT_USER_SUCCESS",
+                    data: { ...res.data(), id: result.user.uid }
+                  });
+            }
+          });
+      })
+      .catch((error)=> {
+        console.log("long", error);
+      });
+  };
+};
 
-        let creds = JSON.parse(localStorage.getItem('creds'))
-        if(creds){
-        firebase.auth().signInWithEmailAndPassword(
-            creds.email,
-            creds.password
-        ).then((res) => {
-            firestore.collection('/users').doc(res.user.uid).get().then(response=>{
-                console.log('check ',response.data());
-                console.log('check user id',res.user);
-                console.log("long check current user")
+export const logOut = () => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
 
-                dispatch({type: 'LOGIN_USER_SUCCESS',data:{...response.data(), id:res.user.uid}});
-            })
-            
-        }).catch((err)=>{
-            dispatch({type: 'LOGIN_ERROR', err});
-        })
-    }
-
-
-    }
-}
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        dispatch({ type: "LOGOUT_USER_SUCCESS" });
+      });
+  };
+};
