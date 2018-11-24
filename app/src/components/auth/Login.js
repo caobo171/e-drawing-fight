@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 
 import {logIn, logOut} from '../../actions/authActions';
 
+import Register from './Register';
+
 class Login extends Component {
   state ={
     email: '',
@@ -24,40 +26,54 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.props.auth);
     return (
-      <div>
-        <form onSubmit= {this.onSubmit}>
-          <label>Email</label>
+      <section className="login" id="login">
+        <form className="login__form form" onSubmit= {this.onSubmit}>
+        <i className="heading-secondary__icon fas fa-paint-brush"></i>
+        <h2 className="heading-secondary">
+             Edrawing FIGHT
+          </h2>
+          <div className="form__control">
+            <i className="fas fa-envelope form__title"></i>
+            <input 
+              className="form__input"
+              placeholder="email"
+              type="email"
+              name="email"
+              required
+              value={this.state.email}
+              onChange ={this.onChange}
+            />
+          </div>
+          <div className="form__control">
+              <i className="fas fa-unlock form__title"></i>
+              <input 
+                className="form__input"
+                placeholder="password"
+                type="password"
+                name="password"
+                required
+                value={this.state.password}
+                onChange ={this.onChange}
+              />
+          </div>  
           <input 
-            type="text"
-            name="email"
-            required
-            value={this.state.email}
-            onChange ={this.onChange}
-          />
-          <label>PassWord</label>
-          <input 
-            type="password"
-            name="password"
-            required
-            value={this.state.password}
-            onChange ={this.onChange}
-          />
-          <input 
+            className="form__submit login_login btn" 
             type="submit"
-            value="Login"
+            value="LOGIN"
           />
+           <div className="login__register">
+              Don't have account yet! <a className="login__register--a" href="#popup">Sign Up Now!</a>
+            </div>
+           
         </form>
-        <button onClick={this.onClick}>Logout</button>
-      </div>
+        
+        <Register />
+      </section>
     )
   }
 }
 
-Login.PropTypes ={
-  firebase: PropTypes.object.isRequired
-}
 
 const mapStatetoProps = (state)=>{
   return{

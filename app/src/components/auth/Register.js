@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-// import {Redirect} from 'react-router-dom';
+
 import {register} from '../../actions/authActions'
 
 class Register extends Component {
@@ -16,59 +16,86 @@ class Register extends Component {
 
  onSubmit = e => {
    e.preventDefault();
+   console.log('check',this.state);
    this.props.register(this.state)
  }
 
  render() {
     return (
-      <div>
-        <form onSubmit= {this.onSubmit}>
-          <label>Name</label>
+      <section className="register popup" id="popup">
+        <form className="register__form form popup__content" onSubmit= {this.onSubmit}>
+        <a href="#login" className="popup__close">&times;</a>
+         <div className="form__control">
+         <i className="fas fa-user form__title"></i>
           <input
+             className="form__input"
+             placeholder="name"
              name="name"
              type="text"
              required
              value={this.state.name}
              onChange={this.onChange}
           />
-          <label>Email</label>
+         </div>
+
+         <div className="form__control">
+         <i className="far fa-user-circle form__title"></i>
           <input
+             className="form__input"
+             placeholder="avatar link"
+             name="avatar"
+             type="text"
+             value={this.state.avatar}
+             onChange={this.onChange}
+          />
+         </div>
+         
+         <div className="form__control">
+         <i className="fas fa-envelope form__title"></i>
+          <input
+             className="form__input"
+             placeholder="email"
              name="email"
              type="email"
              required
              value={this.state.email}
              onChange={this.onChange}
           />
-          <label>Password</label>
+         </div>
+
+         <div className="form__control">
+         <i className="fas fa-user-lock form__title"></i>
           <input
+             className="form__input"
+             placeholder="password"
              name="password"
              type="password"
              required
              value={this.state.password}
              onChange={this.onChange}
           />
-          <label>Confirm Password</label>
+         </div>
+
+         <div className="form__control">
+         <i className="fas fa-unlock form__title"></i>
           <input
+             className="form__input"
+             placeholder="confirm password"
              name="password2"
              type="password"
              required
              value={this.state.password2}
              onChange={this.onChange}
           />
-          <label>Avatar Link</label>
-          <input
-             name="avatar"
-             type="text"
-             required
-             value={this.state.avatar}
-             onChange={this.onChange}
-          />
-           <input 
+         </div>
+        
+          <input 
+            className="form__submit login_login btn"
             type="submit"
-            value="Register"
+            value="REGISTER"
           />     
         </form>
-      </div>
+      </section>
     )
   }
 }

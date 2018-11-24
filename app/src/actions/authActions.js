@@ -25,6 +25,8 @@ export const logOut= () => {
 }
 
 export const register = (newUser) => {
+    console.log('check user',newUser);
+    //console.log('check user', history);
     return(dispatch, getState, {getFirebase, getFirestore})=> {
         const firebase = getFirebase();
         const firestore = getFirestore();
@@ -37,12 +39,19 @@ export const register = (newUser) => {
                 name: newUser.name,
                 avatar: newUser.avatar,
                 exp: 0,
-                level: 0,
-                certification: []
+                level: 'newbie',
+                matches_3_stars: 0,
+                matches_win: 0,
+                matches_play: 0,
+                rank: 0,
+                isOnline: false,
+                isFighting: false,
+                listFriends: ['']
             })
         }).then(()=> {
             dispatch({type: 'REGISTER_SUCCESS'})
-        }).catch((err)=> {
+        })
+        .catch((err)=> {
             dispatch({type: 'REGISTER_ERROR', err})
         })
     }

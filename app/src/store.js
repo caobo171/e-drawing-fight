@@ -32,6 +32,10 @@ const rrfConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+// bug for version firebase/firestore
+const firestore = firebase.firestore();
+const settings = {/* your settings... */ timestampsInSnapshots: true};
+firestore.settings(settings);
 // const firestore = firebase.firestore();
 
 const createStoreWithFirebase = compose(
