@@ -28,6 +28,7 @@ class App extends Component {
               <Route path="/testplay" exact component={Test}/>
               <Route path = "/arena" exact component = {Arena}/>
               <Route path = "/profile/:id" exact component = {Profile}/>
+              <Route path="/testplay/:id"exact component={Test}/>
             </div>
             
       

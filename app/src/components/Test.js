@@ -9,6 +9,8 @@ import AI from "../sketches/aiService";
 class Test extends Component {
   constructor(props){
     super(props); 
+    this.div1 = React.createRef();
+    this.div2 = React.createRef();
 
     this.levelUp = this.handlerLevelUp.bind(this);
 
@@ -41,11 +43,9 @@ class Test extends Component {
   }
   
   componentDidMount (){
-
-    this.renderWord();
     setInterval(()=>{  // dem thoi gian de doi chu moi voi ca xoa canvas
       if(this.state.time>0){
-        this.setState({time: this.state.time - 1});} 
+        this.setState({time: this.state.time-1 });} 
 
       else{ this.handlerLevelUp();
 
@@ -57,20 +57,63 @@ class Test extends Component {
   }// là sao ?? cai ham level up kia
   
   render() {
+    console.log("long",this.props.user, "  ", this.props.match.params.id)
+    if(this.props.user.uid===this.props.match.params.id){
+      this.renderWord();
+    }
+   // console.log(this.props.auth.uid);
   return (
     <div>
-      <div>word {this.state.word}</div>
-      <div>{this.state.time}</div> 
-      <div id="sketch1"> <P5Wrapper float="left" socket={this.props.socket} text={this.state.word} time={this.state.time} levelUp={this.levelUp} sketch={sketchTest} /></div>
-      <div id= "sketch2"> <P5Wrapper float="right" socket={this.props.socket}  sketch={sketchTest2} /> </div> 
+      <section className="match">
+        <div class="board">
+          <div class="board__avatar--left">
+            <div class="board__avatar--name--left">
+                Vipmath171
+            </div>
+            <img class="board__avatar--img" src="img/person2.png" alt="avatar"/>
+          </div>
+          <div ref ={this.div1} id="sketch1" className="board">
+            <P5Wrapper socket={this.props.socket} roomId={this.props.match.params.id}
+              text={this.state.word} time={this.state.time} 
+              levelUp={this.levelUp} sketch={sketchTest} />
+          </div>
+        </div>
+
+        <div class="match__score">
+            1 : 0
+        </div>
+
+        <div class="match__timer">
+            <i class="match__timer--clock far fa-clock"></i>
+            <div class="match__timer--number">
+             {this.state.time}
+            </div>
+        </div>
+
+        <div class="board">
+            <div class="board__avatar--right">
+                <div class="board__avatar--name--right">
+                    Vipmath171
+                </div>
+                <img class="board__avatar--img" src="img/person2.png" alt="avatar"/>
+            </div>
+            <div ref = { this.div2} id="sketch2" class="board">
+              <P5Wrapper  socket={this.props.user.socket} roomId = {this.props.match.params.id}  sketch={sketchTest2} />
+            </div>
+        </div>
+        <div>word {this.props.word}</div>
+      </section>
     </div>
   );
   }
 }
 
+
+
 const mapStatetoProps = (state)=>{
   return{
-    socket: state.user.currentUser.socket
+    user: state.user.currentUser,
+    auth:state.firebase.auth
   }
 }
 

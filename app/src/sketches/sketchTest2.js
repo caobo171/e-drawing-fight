@@ -1,34 +1,33 @@
 import AI from "./aiService";
-import io from "socket.io-client";
 export default function sketchTest2(p) {
   var ai;
+  var x; var px;
+  var y; var py;
   var socket = null;
-  var x;
-  var y;
-  var px;
-  var py;
   p.setup = () => {
     ai = new AI(p);
     ai.start();
-    p.createCanvas(400, 600);
+    var canvasDiv = document.getElementById('sketch1');
+    var width = canvasDiv.offsetWidth;
+    var height = canvasDiv.offsetHeight;
+    p.createCanvas(width,height);
     p.background("#ddd");
-
   };
 
-  p.draw = () => {
-    p.strokeWeight(8);
-    p.stroke(0);
-    if(px!=null && py!=null && x!=null && y!=null){
-      console.log("drawing");
-      p.line(px,py,x,y);
-    }
-    if(socket!=null){
-      socket.on("server-send-drawing",(dataX,dataY)=>{
-        if(x!=null){px=x;};
-        if(y!=null){py=y;};
-        x = dataX;
-        y = dataY;
+  p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
+    socket = props.socket;
+    if(socket){
+      window.socket.on("server-send-drawing",(mousex,mousey,pmousex,pmousey)=>{ 
+        if(true){
+          px=pmousex;py=pmousey;
+          x=mousex;y=mousey;
+          p.stroke(0);
+          p.line(px,py,x,y);
+        }
       })
     }
+  }
+
+  p.draw = () => {
   }
 }
