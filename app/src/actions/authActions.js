@@ -63,6 +63,6 @@ export const getCurrentUser= (firestore,dataUser,dispatch)=>{
     firestore.collection('users').doc(dataUser.uid).get()
     .then(result =>{
         console.log('check',result.data())
-        dispatch({type:'GET_CURRENT_USER_SUCCESS',data:{...result.data(),id:dataUser.uid}})
+        dispatch({type:'GET_CURRENT_USER_SUCCESS',data:{...result.data(), uid:dataUser.uid}})
     })
 }

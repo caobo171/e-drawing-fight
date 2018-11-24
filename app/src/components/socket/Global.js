@@ -1,18 +1,36 @@
 import React from "react";
 import { connect } from "react-redux";
+import { setUsersOnline } from '../../actions/userActions';
 
 class Global extends React.Component {
   state = {
-    ischallenged: false
+    ischallenged: false,
+    id:null,
   };
   componentDidMount() {
     if (window.socket) {
       console.log("long socket ok ok");
-      window.socket.on("challenge", () => {
-        console.log("long challenge");
-        this.setState({ ischallenged: true });
+      window.socket.on("challenge", (id) => {
+        this.setState({ ischallenged: true,id:id});
       });
+
+      window.socket.on("get-users",(data)=>{
+        console.log('long data',data);
+        this.props.setUsersOnline(data);
+      })
+
+      window.socket.on("server-change-route",(id)=>{this.props.history.push('/testplay/'+id);})
     }
+  }
+
+  handleAccept = () => {
+    this.setState({ ischallenged: false });
+    this.props.socket.emit("client-accept",this.state.id);
+    this.props.history.push('/testplay/'+this.state.id);
+  }
+
+  handlerDecline = () =>{
+    this.setState({ ischallenged: false });
   }
 
   render() {
@@ -35,8 +53,8 @@ class Global extends React.Component {
                 is challenging you
               </p>
 
-              <button className="btn-teal">accept</button>
-              <button className="btn-blue">decline</button>
+              <button className="btn-teal" onClick={()=>this.handleAccept()}>accept</button>
+              <button className="btn-blue" onClick={()=>this.handlerDecline()}>decline</button>
             </div>
           </div>
         )}
@@ -46,7 +64,11 @@ class Global extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    setUsersOnline: data => {
+      dispatch(setUsersOnline(data));
+    },
+  };
 };
 
 const mapStatetoProps = state => {
