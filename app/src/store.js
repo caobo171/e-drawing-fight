@@ -42,6 +42,8 @@ firebase.auth().onAuthStateChanged((user) =>{
   }
 });
 
+window.firebase = firebase;
+
 const createStoreWithFirebase = compose(
   reactReduxFirebase(firebase, rrfConfig),
   reduxFirestore(firebase)

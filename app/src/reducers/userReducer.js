@@ -10,13 +10,15 @@ socket.on("user-exist", () => {
   console.log("check USER EXIST");
 });
 
+window.socket = socket;
+
 const userReducer = (state = initState, action) => {
   switch (action.type) {
     case "LOGIN_USER_SUCCESS":
       let object = { socket, ...action.data };
       object.socket.emit("login-user", {
         socketid: object.socket.id,
-        ...action.data
+        id: action.data.id
       });
       console.log("check success", object);
       return { ...state, currentUser: object };
@@ -24,11 +26,15 @@ const userReducer = (state = initState, action) => {
     case "LOGOUT_USER_SUCCESS":
       socket.emit("logout-user", { socketid: socket.id });
       return {...state,currentUser:{}};
-      
+
     case "GET_CURRENT_USER_SUCCESS":
       let object1 = { socket, ...action.data };
       console.log("check getcurrent success", object1);
       if(action.data){
+        object1.socket.emit("login-user", {
+          socketid: object1.socket.id,
+          id: action.data.id
+        });
         return {...state,currentUser:object1}
       }else{
         return {...state,currentUser:{}}

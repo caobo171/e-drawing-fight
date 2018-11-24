@@ -12,10 +12,7 @@ export default function sketchTest2(p) {
     ai.start();
     p.createCanvas(400, 600);
     p.background("#ddd");
-    socket = io("http://localhost:5000");
-    socket.on("connect",()=>{
-      console.log(socket.id);
-    });
+
   };
 
   p.draw = () => {
