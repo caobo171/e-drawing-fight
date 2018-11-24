@@ -5,6 +5,8 @@ import Test from "./components/Test";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 
+import Global from './components/socket/Global';
+
 import test from "./components/auth/test";
 
 import { Provider } from "react-redux";
@@ -17,15 +19,16 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <div>
+       
             <div className="App">
+              <Global/>
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
               <Route path="/test" component={test} />
               <Route path="/testplay" component={Test}/>
             </div>
             
-          </div>
+      
         </Router>
       </Provider>
     );
