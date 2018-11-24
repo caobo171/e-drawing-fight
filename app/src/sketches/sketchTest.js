@@ -5,17 +5,12 @@ export default function sketchTest(p) {
   var word = "aaaaaa"; 
   var time = 15;
   var score = 0;
-  var socket = null;
 
   p.setup = () => {
     ai = new AI(p);
     ai.start();
     p.createCanvas(400, 600);
     p.background("white");
-    socket = io("http://localhost:5000");
-    socket.on("connect",()=>{
-      console.log(socket.id);
-  });
   };
 
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
@@ -23,7 +18,13 @@ export default function sketchTest(p) {
       word = props.text;
       time = props.time;
       let levelUp = props.levelUp;
-
+      let socket = props.socket;
+      if(socket){
+        socket.on("connect",()=>{
+          console.log('long',socket.id);
+        })
+  
+      }
       if(p.mouseIsPressed){
         word = "rain";
 
@@ -50,11 +51,6 @@ export default function sketchTest(p) {
     p.stroke(0);
     if (p.mouseIsPressed) {
       p.line(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
-
-      if(socket != null){
-        socket.emit("client-send-drawing",p.mouseX,p.mouseY);
-      }
-
     }
     if(time===0){
       p.background("white");
