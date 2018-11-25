@@ -8,7 +8,7 @@ export default function sketchTest(p) {
   var roomId;
 
   p.setup = () => {
-    var canvasDiv = document.getElementById('sketchPractice');
+    var canvasDiv = document.getElementById('sketch1');
     var width = canvasDiv.offsetWidth;
     var height = canvasDiv.offsetHeight;
     p.createCanvas(width,height);
