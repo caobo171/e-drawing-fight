@@ -9,6 +9,8 @@ module.exports=(io,socket ,userOnline)=>{
         var room = io.sockets.adapter.rooms[uid];
         for(c in room.sockets){
             socket.to(c).emit("server-change-route",uid);
+            socket.to(c).emit("server-set-owner",true);
+            socket.emit("server-set-guess",false);
         }
     })
 }

@@ -12,16 +12,7 @@ module.exports = function (io){
             console.log('ok',socket.id);
         })   //chua co chuc nang tao room nen cho dai vo room nay
         require("./challenge.js")(io,socket,userOnline);
-        // socket.on('challenge',(id,socketid)=>{    //id va socketid cua nguoi 2
-        //     socket.join(id);
-        //     socket.to(socketid).emit('challenge',id,socketid,socket.id);
-        // })
-        // socket.on("client-accept",(id,socketid)=>{
-        //     if(socket.id==socketid){
-        //          socket.join(id);
-        //          console.log(socket.adapter.rooms);
-        //     }
-        // })
+        require("./play.js")(io,socket);
         socket.on('login-user',(data)=>{
             console.log(data);
             console.log('--------------')

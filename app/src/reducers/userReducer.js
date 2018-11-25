@@ -18,15 +18,6 @@ window.socket = socket;
 
 const userReducer = (state = initState, action) => {
   switch (action.type) {
-    case "LOGIN_USER_SUCCESS":
-      let object = { socket, ...action.data };
-      console.log('long login user success',action.data);
-      object.socket.emit("login-user", {
-        socketid: object.socket.id,
-        uid: action.data.uid 
-      });
-      console.log("check success", object);
-      return { ...state, currentUser: object ,auth:true };
 
     case "LOGOUT_USER_SUCCESS":
       socket.emit("logout-user", { socketid: socket.id });

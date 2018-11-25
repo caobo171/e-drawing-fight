@@ -5,12 +5,9 @@ import React,{Component} from 'react';
         super(props);
     }
 
-    componentWillMount(){console.log("long",this.props.isOwner);
-        if(this.props.isOwner){
-            this.renderWord();
-        }
+    componentWillMount(){
     }
-    render(){console.log(this.state.word);
+    render(){
         return (
             <div className="popup-top notification">
                 <div className="notification-word popup-top__content">
@@ -19,7 +16,7 @@ import React,{Component} from 'react';
                             Draw 1/5 Words 
                         </p>
                         <h1 className="heading-primary notification-word__content--word">
-                            {this.state.word}
+                            {this.props.word} 
                         </h1>
                         <p className="notification-word__content--warning">
                             Under 15s and continue in 
