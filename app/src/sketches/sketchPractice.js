@@ -8,7 +8,7 @@ export default function sketchTest(p) {
   var roomId;
 
   p.setup = () => {
-    var canvasDiv = document.getElementById('sketchPractice');
+    var canvasDiv = document.getElementById('sketch1');
     var width = canvasDiv.offsetWidth;
     var height = canvasDiv.offsetHeight;
     p.createCanvas(width,height);
@@ -31,16 +31,10 @@ export default function sketchTest(p) {
     };
   };
 
-  let sendMouse = ()=>{
-    if(socket){
-      socket.emit("client-send-drawing",p.mouseX,p.mouseY,p.pmouseX,p.pmouseY,roomId);
-    }
-  }
-
   p.mouseDragged = () =>{
     p.stroke(0);
     p.line(p.pmouseX, p.pmouseY,p.mouseX,p.mouseY);
-    sendMouse();
+
     // let prediction = ai.predict().names[0];
     // prediction = prediction.replace(/\s/g,'');///bỏ khoảng trắng regular expression
     // console.log(prediction);

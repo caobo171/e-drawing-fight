@@ -91,14 +91,14 @@ class Dashboard extends React.Component {
                       <h3 className="heading-tertiary">The Fighting Arena</h3>
                     </div>
                   </Link>
-                  <a className="dashboard__card">
+                  <Link to="/practice" className="dashboard__card">
                     <div className="dashboard__card--icon">
                       <i className="dashboard__card--icon--i fas fa-book" />
                     </div>
                     <div className="dashboard__card--title">
                       <h3 className="heading-tertiary">Practicing Place</h3>
                     </div>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

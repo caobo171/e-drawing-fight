@@ -7,7 +7,7 @@ import Arena from './components/Arena';
 import Global from './components/socket/Global';
 import Dashboard from './components/Dashboard';
 import Profile from './components/Profiles';
-import Practice from './components/Practice';
+import Practice from './components/practice/Practice';
 import test from "./components/auth/test";
 
 import { Provider } from "react-redux";
@@ -20,7 +20,6 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-       
             <div className="App">
               <Route path="/" component ={Global}/>
               <Route path="/" exact component={Dashboard} />
@@ -30,6 +29,8 @@ class App extends Component {
               <Route path = "/arena" exact component = {Arena}/>
               <Route path = "/profile/:id" exact component = {Profile}/>
               <Route path="/testplay/:id"exact component={Test}/>
+              <Route path = "/profile" exact component = {Profile}/>
+              <Route path = "/practice" exact component = {Practice}/>
             </div>
             
       
