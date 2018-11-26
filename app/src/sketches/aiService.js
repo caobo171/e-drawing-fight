@@ -5,7 +5,7 @@ export default class AI {
     this.classNames = [];
     this.model = {};
     this.len = 784;
-    this.classPath = "model2/class_names.txt";
+    this.classPath = __dirname+"model2/class_names.txt";
     this.stringClasses = "";
   }
 
@@ -13,10 +13,13 @@ export default class AI {
     return new Promise((resolve, reject) => {
       var rawFile = new XMLHttpRequest();
       rawFile.open("GET", this.classPath, false);
+      //console.log('long', this.classPath);
       rawFile.onreadystatechange = function() {
         if (rawFile.readyState === 4) {
           if (rawFile.status === 200 || rawFile.status === 0) {
-            resolve(rawFile.responseText);
+           
+            //console.log("long",rawFile.responseText)
+            resolve(rawFile.responseText); 
           }
         }
       };

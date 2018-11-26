@@ -1,7 +1,7 @@
 import AI from "./aiService";
 export default function sketchTest(p) {
   var ai;
-  var word = "rain"; 
+  var word = ""; 
   var time = 15;
   var socket = null;
   var levelUp = null;
@@ -38,19 +38,22 @@ export default function sketchTest(p) {
   }
 
   p.mouseDragged = () =>{
+    sendMouse();
     p.stroke(0);
     p.line(p.pmouseX, p.pmouseY,p.mouseX,p.mouseY);
-    sendMouse();
-    // let prediction = ai.predict().names[0];
-    // prediction = prediction.replace(/\s/g,'');///bỏ khoảng trắng regular expression
-    // console.log(prediction);
-    // if (word === prediction) {
-    //   console.log("correct");
-    //   setTimeout(()=>{
-    //     p.background("white");
-    //     levelUp();
-    //     console.log("long eofanasn")
-    //   },1000);
-    // }
   };
+
+  p.mouseReleased = () => {
+    word = "rain";
+    let prediction =  "rain";//ai.predict().names[0];
+    prediction = prediction.replace(/\s/g,'');///bỏ khoảng trắng regular expression
+    console.log(prediction);
+    if (word === prediction) {
+      console.log("correct");
+      setTimeout(()=>{
+        p.background("white");console.log("long sketch level up")
+        levelUp();
+      },1000);
+    }
+  }
 }
