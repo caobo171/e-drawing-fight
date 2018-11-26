@@ -25,6 +25,10 @@ export default function sketchTest2(p) {
           p.line(px,py,x,y);
         }
       })
+
+      window.socket.on("server-level-up",()=>{
+        p.background('#ddd');
+      })
     }
   }
 

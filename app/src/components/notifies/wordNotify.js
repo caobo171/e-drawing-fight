@@ -13,7 +13,7 @@ import React,{Component} from 'react';
                 <div className="notification-word popup-top__content">
                     <div className="notification-word__content">
                         <p className="notification-word__content--note" >
-                            Draw 1/5 Words 
+                            Draw {this.props.level}/5 Words 
                         </p>
                         <h1 className="heading-primary notification-word__content--word">
                             {this.props.word} 

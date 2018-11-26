@@ -5,7 +5,9 @@ import P5Wrapper from "react-p5-wrapper";
 import sketchTest from "../sketches/sketchTest";
 import sketchTest2 from "../sketches/sketchTest2";
 import WordNotify from "./notifies/wordNotify";
-
+import WinNotify from "./notifies/winNotify";
+import LoseNotify from "./notifies/loseNotify";
+import DrawNotify from "./notifies/drawNotify";
 
 class Test extends Component {
   constructor(props) {
@@ -19,6 +21,8 @@ class Test extends Component {
     this.renderNotify = this.renderNotify.bind(this);
     this.state = {
       isOwner: null,
+      myScore:0,
+      yourScore:0,
       words: [],
       time: 20,
       level: 1,
@@ -50,13 +54,33 @@ class Test extends Component {
     } );
   }
 
-  handlerLevelUp = () => {
-    if (this.state.level == 5) {
-      console.log("End game! ");
-      this.setState({ level: 1 });
-    } else {
+  handleTimeOut = () => {
+    if(this.state.level<=5){
       this.setState({ level: this.state.level + 1, time: 20, render: 1 });
     }
+  }
+
+  checkEndGame = () =>{
+    if (this.state.level > 5 ) {
+      console.log("End game! ");
+      if(this.state.myScore>this.state.yourScore){
+        this.setState({render:2})
+      } else if (this.state.myScore === this.state.yourScore){
+        this.setState({render:3})
+      }else {
+        this.setState({render:4})
+      }
+      console.log("long", this.state.render);
+    }
+  }
+
+  handlerLevelUp = () => { console.log("long trying",this.state.level);
+    window.socket.emit("client-level-up",this.props.match.params.id);
+    if(this.state.level<=5){
+      this.setState({ level: this.state.level + 1, time: 20, render: 1});
+      this.setState((state)=>({myScore:state.myScore+1}));
+    }
+    this.checkEndGame();
   }
 
   tick = () => {
@@ -64,10 +88,8 @@ class Test extends Component {
       if (this.state.time > 0) {
         this.setState({ time: this.state.time - 1 });
       }
-
-      else {
-        this.handlerLevelUp();
-
+      else{ 
+        this.handleTimeOut();console.log("long tick one")
       }
       if (this.state.time == 15) {
         this.setState({ render: 0 });
@@ -90,17 +112,42 @@ class Test extends Component {
     })
     this.tick();
   }
+
+  componentDidMount(){
+    window.socket.on("server-level-up",()=>{ console.log("long level up");
+      if(this.state.level<=5){
+        this.setState({ level: this.state.level + 1, time: 20, render: 1 });
+        this.setState((state)=>({yourScore: state.yourScore+1}));
+      }
+      this.checkEndGame();
+    });
+  }
+
   componentWillUnmount() {
     clearInterval();
   }
 
   renderNotify() {
-    if (this.state.render == 1) {
-      return (
-        <WordNotify word={this.state.words[this.state.level-1]} time={this.state.time - 15} />
-      )
-    } else {
-      return null
+    switch (this.state.render){
+      case 1:
+        return (
+          <WordNotify word={this.state.words[this.state.level-1]} time={this.state.time - 15} 
+                level = {this.state.level}/>
+        );
+      case 2:
+        return (
+          <WinNotify/>
+        );
+      case 3:
+        return (
+          <DrawNotify/>
+        );
+      case 4:
+        return(
+          <LoseNotify/>
+        );
+      default:
+        return null;
     }
   }
 
@@ -125,7 +172,7 @@ class Test extends Component {
           </div>
 
           <div class="match__score">
-            1 : 0
+            {this.state.myScore} : {this.state.yourScore}
         </div>
 
           <div class="match__timer">
