@@ -31,10 +31,6 @@ module.exports = function (io){
   
         })
 
-        socket.on("client-send-drawing",(x,y,px,py,roomId)=>{
-            socket.in(roomId).emit("server-send-drawing",x,y,px,py);
-        })
-
         socket.on('logout-user',(data)=>{
             handleDisConnect(data.socketid);
         })

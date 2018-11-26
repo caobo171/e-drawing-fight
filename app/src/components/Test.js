@@ -55,9 +55,7 @@ class Test extends Component {
       console.log("End game! ");
       this.setState({ level: 1 });
     } else {
-
       this.setState({ level: this.state.level + 1, time: 20, render: 1 });
-      //this.setState({time: 15});console.log(this.state.level);
     }
   }
 
@@ -78,40 +76,23 @@ class Test extends Component {
   }
 
   componentWillMount() { 
-    window.socket.on("server-set-owner",(isOwner)=>{
+    window.socket.on("server-set-owner",async (isOwner)=>{
+      await this.renderWords(); console.log("long",this.state.words)
+      window.socket.emit("client-send-word", this.state.words, this.props.match.params.id);
       this.setState({isOwner});
-      console.log("long",isOwner)
+      console.log("long",isOwner);
     })
-    window.socket.on("server-set-guess",(isOwner)=>{
-      this.setState({isOwner}); console.log("long",isOwner)
-    })
-    if(this.state.isOwner){
-      this.renderWords(); console.log("long owner")
-      window.socket.emit("client-send-word", this.state.words[0], this.props.match.params.uid);
-      this.tick();
-    } else{
-      this.setState({ isOwner: false });
-      window.socket.on("server-send-word", (words) => { 
+    window.socket.on("server-set-guess",async(isOwner)=>{
+      await window.socket.on("server-send-word",(words) => { 
         this.setState({ words });
       });
-      this.tick();
-    }
-    // if (this.props.match.params.uid === window.socket.id) {
-    //   this.renderWords(); console.log("long owner")
-    //   window.socket.emit("client-send-word", this.state.words[0], this.props.match.params.uid);
-    //   this.tick();
-    // }
-    // else { console.log("long now owner");
-    //   this.setState({ isOwner: false });
-    //   window.socket.on("server-send-word", (words) => { 
-    //     this.setState({ words });
-    //   });
-    //   this.tick();
-    // }
+      this.setState({isOwner}); console.log("long",isOwner);
+    })
+    this.tick();
   }
   componentWillUnmount() {
     clearInterval();
-  }// là sao ?? cai ham level up kia
+  }
 
   renderNotify() {
     if (this.state.render == 1) {
@@ -137,7 +118,7 @@ class Test extends Component {
               <img class="board__avatar--img" src="img/person2.png" alt="avatar" />
             </div>
             <div ref={this.div1} id="sketch1" className="board">
-              <P5Wrapper socket={this.props.socket} roomId={this.props.match.params.id}
+              <P5Wrapper socket={this.props.user.socket} roomId={this.props.match.params.id}
                 text={this.state.words[this.state.level-1]} time={this.state.time}
                 levelUp={this.levelUp} sketch={sketchTest} />
             </div>
@@ -168,7 +149,7 @@ class Test extends Component {
           <div>word</div>
         </section>
         <React.Fragment>
-          {(this.state.words.length>0) ? this.renderNotify() : null
+          {(this.state.isOwner!=null) ? this.renderNotify() : null
           }
 
         </React.Fragment>
